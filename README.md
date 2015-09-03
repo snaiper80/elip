@@ -1,5 +1,5 @@
 # Elip
-A Erlang Application to lookup network name with given network configuration.
+An Erlang Application to lookup network name with given network configuration.
 
 # Usages
 If V3 network is 10.5.0.0/16, To lookup V3 network codes is following codes.
