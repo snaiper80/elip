@@ -1,0 +1,12 @@
+{application, elip,
+ [
+  {description, "elip"},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { elip_app, []}},
+  {env, []}
+ ]}.
