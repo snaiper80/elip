@@ -15,25 +15,25 @@ If V3 network is 10.5.0.0/16, To lookup V3 network codes is following codes.
 ```erlang
 {
     {name, "V0"},
-    {description, "Office 1"},
+    {description, "Network 1"},
     {network, ["10.1.0.0/16", "10.2.0.0/16"]}
 }.
 
 {
     {name, "V1"},
-    {description, "Office 2"},
+    {description, "Network 2"},
     {network, ["10.3.0.0/16"]}
 }.
 
 {
     {name, "V2"},
-    {description, "Office 3"},
+    {description, "Network 3"},
     {network, ["10.4.0.0/16", "10.41.0.0/16"]}
 }.
 
 {
     {name, "V3"},
-    {description, "Office 4"},
+    {description, "Network 4"},
     {network, ["10.5.0.0/16", "10.51.0.0/16"]}
 }.
 ```
