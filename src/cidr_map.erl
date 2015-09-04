@@ -8,6 +8,8 @@
 -opaque cidr_map() :: #cidr_map{}.
 -export_type([cidr_map/0]).
 
+-define(IPV4_LENTH,    32).
+
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
 -endif.
@@ -28,7 +30,7 @@ add_network(Name, CidrStr, #cidr_map { root = Root } = Map) ->
     {ok, Addr} = inet_parse:address(Ip),
     Mask       = list_to_integer(MaskStr),
 
-    Map#cidr_map{root = eltrie:insert_trie(Name, << (ip_to_integer(Addr) bsr (32 - Mask)):Mask >>, Mask, Root) }.
+    Map#cidr_map{root = eltrie:insert_trie(Name, << (ip_to_integer(Addr) bsr (?IPV4_LENTH - Mask)):Mask >>, Mask, Root) }.
 
 -spec add_networks(string(), [string(), ...], cidr_map()) -> cidr_map().
 add_networks(Name, CidrStrs, #cidr_map { root = _ } = Map) when is_list(CidrStrs) ->
@@ -39,7 +41,7 @@ find_network({I0, I1, I2, I3} = Ip, #cidr_map { root = R }) when is_integer(I0),
                                                                  is_integer(I1), I1 >= 0, I1 < 256,
                                                                  is_integer(I2), I2 >= 0, I2 < 256,
                                                                  is_integer(I3), I3 >= 0, I3 < 256 ->
-    eltrie:find_trie(ip_to_binary(Ip), 32, R).
+    eltrie:find_trie(ip_to_binary(Ip), ?IPV4_LENTH, R).
 
 %% ===================================================================
 %% Internal
