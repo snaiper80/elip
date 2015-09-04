@@ -63,11 +63,11 @@ find_network_test() ->
     T2 = add_networks("A", ["1.1.1.0/24", "1.1.3.0/24"], T),
     T3 = add_network("B", "2.2.0.0/16", T2),
 
-    ?assertMatch({true, "A"},  find_network({1,   1, 1,  10},  T3)),
-    ?assertMatch({true, "A"},  find_network({1,   1, 3,  100}, T3)),
-    ?assertMatch({true, "B"},  find_network({2,   2, 11, 11},  T3)),
-    ?assertMatch(false,        find_network({1,   1, 2,  10},  T3)),
-    ?assertMatch(false,        find_network({1,   2, 3,  100}, T3)),
-    ?assertMatch(false,        find_network({127, 0, 0,  1},   T3)).
+    ?assertMatch({found, "A"},  find_network({1,   1, 1,  10},  T3)),
+    ?assertMatch({found, "A"},  find_network({1,   1, 3,  100}, T3)),
+    ?assertMatch({found, "B"},  find_network({2,   2, 11, 11},  T3)),
+    ?assertMatch(not_found,     find_network({1,   1, 2,  10},  T3)),
+    ?assertMatch(not_found,     find_network({1,   2, 3,  100}, T3)),
+    ?assertMatch(not_found,     find_network({127, 0, 0,  1},   T3)).
 
 -endif.
