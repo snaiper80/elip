@@ -60,8 +60,9 @@ ip_to_binary({A, B, C, D}) ->
 -ifdef(TEST).
 
 find_network_test() ->
-    T  = new_cidr_map(),
-    T2 = add_networks("A", ["1.1.1.0/24", "1.1.3.0/24"], T),
+    T1  = new_cidr_map(),
+    %T1 = add_network("0", "1.0.0.1/1", T),
+    T2 = add_networks("A", ["1.1.1.0/24", "1.1.3.0/24"], T1),
     T3 = add_network("B", "2.2.0.0/16", T2),
 
     ?assertMatch({found, "A"},  find_network({1,   1, 1,  10},  T3)),

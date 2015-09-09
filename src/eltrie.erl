@@ -15,6 +15,10 @@ insert_trie(Name, << >>, 0, {non_leaf, LT, RT}) ->
     {leaf, Name, LT, RT};
 insert_trie(Name, Val, Len, nil) ->
     insert_trie(Name, Val, Len, {non_leaf, nil, nil});
+insert_trie(_, _, _, {leaf, _, nil, nil} = Trie) ->
+    % Exceptional Case
+    % Item is already existed - Just ignore current item.
+    Trie;
 insert_trie(Name, Val, Len, {non_leaf, LT, RT}) ->
     RestLen = Len - 1,
     case Val of
