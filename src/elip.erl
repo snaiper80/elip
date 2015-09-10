@@ -2,12 +2,11 @@
 -behaviour(gen_server).
 
 -export([start/0,
-         start_link/0]).
+         start_link/1]).
 
 -export([lookup/1]).
 
 %% Defines
--define(SERVER,                    ?MODULE).
 -define(DEFAULT_CONFIG_FILENAME,   "networks.config").
 
 %% Records
@@ -31,16 +30,16 @@
 start() ->
     application:start(elip).
 
-start_link() ->
-    gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
+start_link(Id) ->
+    gen_server:start_link({local, Id}, ?MODULE, [], []).
 
 -spec lookup(string() | {non_neg_integer(), non_neg_integer(), non_neg_integer(), non_neg_integer()})
         -> {ok, {found, string()} | not_found}.
 lookup(IpStr) when is_list(IpStr) ->
     {ok, Addr} = inet_parse:address(IpStr),
-    gen_server:call(?MODULE, {lookup, Addr});
+    gen_server:call(get_worker(Addr), {lookup, Addr});
 lookup(Ip) when is_tuple(Ip), size(Ip) =:= 4 ->
-    gen_server:call(?MODULE, {lookup, Ip}).
+    gen_server:call(get_worker(Ip), {lookup, Ip}).
 
 %% ===================================================================
 %% gen_server Function Definitions
@@ -75,6 +74,10 @@ code_change(_OldVsn, State, _Extra) ->
 %% ------------------------------------------------------------------
 %% Internal Function Definitions
 %% ------------------------------------------------------------------
+get_worker(Address) ->
+    W = elip_sup:workers(),
+    element(1 + erlang:phash2(Address, tuple_size(W)), W).
+
 default_config_path() ->
   case code:priv_dir(?MODULE) of
       {error, bad_name} ->
